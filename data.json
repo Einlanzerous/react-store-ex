@@ -1,0 +1,57 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Pz.IV H",
+      "category": "Medium Tank",
+      "description": "German tank- Variant H introduced in 1943",
+      "price": 46625,
+      "img": "panzer4_ausf_h"
+    },
+    {
+      "id": 2,
+      "name": "BT42",
+      "category": "Assault Gun",
+      "description": "Finnish assault gun introduced in 1942",
+      "price": 18000,
+      "img": "bt42"
+    },
+    {
+      "id": 3,
+      "name": "Pk.IV F2",
+      "category": "Medium Tank",
+      "description": "German tank- Variant F2 introduced in 1942",
+      "price": 42500,
+      "img": "panzer4_ausf_f2"
+    },
+    {
+      "id": 4,
+      "name": "Wiesel 2",
+      "category": "APC",
+      "description": "Bundeswehr armored personnel carrier introducted in 1995",
+      "price": 2207535,
+      "img": "wiesel2_carrier"
+    },
+    {
+      "id": 5,
+      "name": "Waffenträger",
+      "category": "Assault Gun",
+      "description": "A failed assault gun designed for Germany in 1944",
+      "price": 66117,
+      "img": "waffentrager"
+    }
+  ],
+  "orders": [
+    {
+      "lines": [
+        {
+          "productId": 1,
+          "productName": "Pz.IV H",
+          "quantity": 3,
+          "total": 139875
+        }
+      ],
+      "id": 5
+    }
+  ]
+}

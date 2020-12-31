@@ -1,26 +1,61 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import {
+  BrowserRouter,
+  Redirect,
+  Route,
+  RouteComponentProps,
+  Switch,
+} from 'react-router-dom';
 import './App.css';
+import { addProduct, resetOrder } from './data/actionCreators';
+import { dataStore } from './data/dataStore';
+import { HttpHandler } from './data/httpHandler';
+import { ConnectedProductList } from './data/productListConnector';
+import { OrderDetails } from './orderDetails';
+import { Summary } from './summary';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface Props {
+  // None needed
 }
 
-export default App;
+export default class App extends Component<Props> {
+  private httpHandler = new HttpHandler();
+
+  constructor(props: Props) {
+    super(props);
+    this.httpHandler.loadProducts((data) =>
+      dataStore.dispatch(addProduct(...data))
+    );
+  }
+
+  render = () => (
+    <div className="App">
+      <Provider store={dataStore}>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/products" component={ConnectedProductList} />
+            <Route
+              path="/order"
+              render={(props) => (
+                <OrderDetails
+                  {...props}
+                  submitCallback={() => this.submitCallback(props)}
+                />
+              )}
+            />
+            <Route path="/summary/:id" component={Summary} />
+            <Redirect to="/products" />
+          </Switch>
+        </BrowserRouter>
+      </Provider>
+    </div>
+  );
+
+  submitCallback = (routeProps: RouteComponentProps) => {
+    this.httpHandler.storeOrder(dataStore.getState().order, (id) => {
+      dataStore.dispatch(resetOrder());
+      return routeProps.history.push(`/summary/${id}`);
+    });
+  };
+}
